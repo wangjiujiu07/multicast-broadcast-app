@@ -44,7 +44,16 @@ jobs:
         run: |
           set -o pipefail
           buildozer android update
-          yes | "$ANDROID_SDK_ROOT"/cmdline-tools/latest/bin/sdkmanager \
+          SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$SDKMANAGER" ]; then
+            SDKMANAGER="$ANDROID_SDK_ROOT/tools/bin/sdkmanager"
+          fi
+          if [ ! -x "$SDKMANAGER" ]; then
+            echo "sdkmanager not found under $ANDROID_SDK_ROOT"
+            find "$ANDROID_SDK_ROOT" -maxdepth 4 -type f -name sdkmanager || true
+            exit 1
+          fi
+          yes | "$SDKMANAGER" \
             "platform-tools" \
             "platforms;android-33" \
             "build-tools;34.0.0"
