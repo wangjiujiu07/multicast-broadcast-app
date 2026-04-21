@@ -37,6 +37,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install "Cython==0.29.36" "buildozer==1.5.0" "python-for-android==2024.1.21"
 
+      - name: Prepare Android SDK components
+        env:
+          ANDROID_SDK_ROOT: /home/runner/.buildozer/android/platform/android-sdk
+          ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
+        run: |
+          set -o pipefail
+          buildozer android update
+          yes | "$ANDROID_SDK_ROOT"/cmdline-tools/latest/bin/sdkmanager \
+            "platform-tools" \
+            "platforms;android-33" \
+            "build-tools;34.0.0"
+          ls -la "$ANDROID_SDK_ROOT/build-tools"
+
       - name: Build debug APK
         env:
           ANDROID_SDK_ROOT: /home/runner/.buildozer/android/platform/android-sdk
