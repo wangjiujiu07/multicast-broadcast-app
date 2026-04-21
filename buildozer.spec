@@ -19,7 +19,7 @@ android.sdk = 33
 android.ndk = 25b
 android.build_tools_version = 34.0.0
 android.accept_sdk_license = True
-android.archs = arm64-v8a,armeabi-v7a
+android.archs = arm64-v8a
 
 log_level = 2
 warn_on_root = 1
